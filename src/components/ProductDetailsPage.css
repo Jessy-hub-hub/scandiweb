@@ -1,0 +1,134 @@
+/* Overall Page Layout */
+.product-details-page {
+  display: flex;
+  max-width: 1200px;
+  margin: 80px auto 0; /* Push content below the header */
+  gap: 40px;
+  font-family: Arial, sans-serif;
+  align-items: flex-start; /* Align product details at the top */
+}
+
+/* Left Column: Image Section */
+.product-image-section {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  align-items: center; /* Vertically align thumbnails and main image */
+}
+
+/* Vertical Gallery Thumbnails */
+.thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 49px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  object-fit: cover;
+  transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.thumbnail.active {
+  border: 2px solid black;
+  transform: scale(1.1);
+}
+
+/* Main Image Wrapper */
+.main-image-wrapper {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+}
+
+.main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* Arrow Styling for Main Image Navigation */
+.arrow {
+  position: absolute;
+  top: 15%; /* Center vertically */
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 10; /* Ensure arrows appear on top of the image */
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+.arrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Right Column: Product Details */
+.product-details-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.attribute-button,
+.color-swatch {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.attribute-button.selected,
+.color-swatch.selected {
+  border: 2px solid black;
+}
+
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+
+.product-price {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.add-to-cart-btn {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+  cursor: pointer;
+  border: none;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: lightgrey;
+  cursor: not-allowed;
+}
+
+.product-description {
+  margin-top: 20px;
+}
