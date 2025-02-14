@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import CartOverlay from "./components/CartOverlay";
 import { CartProvider } from "./context/CartContext";
@@ -16,7 +16,8 @@ const App = () => {
 
   return (
     <CartProvider>
-      <Router>
+      {/* Set basename without a trailing slash */}
+      <Router basename="/scandiweb-project">
         <Header toggleOverlay={toggleOverlay} />
         {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
         <Routes>
