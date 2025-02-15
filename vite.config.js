@@ -10,7 +10,7 @@ export default defineConfig(({ command }) => ({
     port: 3000,
     proxy: {
       '/graphql': {
-        target: 'http://localhost:8000',
+        target: 'https://rugurujane.xyz/backend',
         changeOrigin: true,
       },
     },

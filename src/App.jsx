@@ -17,7 +17,7 @@ const App = () => {
   return (
     <CartProvider>
       {/* Set basename without a trailing slash */}
-      <Router basename="/scandiweb-project">
+      <Router basename="/scandiweb-project/">
         <Header toggleOverlay={toggleOverlay} />
         {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
         <Routes>
