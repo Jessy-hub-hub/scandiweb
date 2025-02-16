@@ -5,6 +5,7 @@
   "type": "module",
   "homepage": "https://your-github-username.github.io/scandiweb",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
