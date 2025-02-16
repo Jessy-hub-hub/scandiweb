@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import CartOverlay from "./components/CartOverlay";
 import { CartProvider } from "./context/CartContext";
@@ -14,19 +14,17 @@ const App = () => {
 
   return (
     <CartProvider>
-      <Router>
-        <Header toggleOverlay={toggleOverlay} />
-        {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
-        <Routes>
-          <Route path="/" element={<ProductListingPage category="all" />} />
-          <Route path="/all" element={<ProductListingPage category="all" />} />
-          <Route path="/tech" element={<ProductListingPage category="tech" />} />
-          <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
-          <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
-          {/* Fallback route */}
-          <Route path="*" element={<ProductListingPage category="all" />} />
-        </Routes>
-      </Router>
+      <Header toggleOverlay={toggleOverlay} />
+      {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
+      <Routes>
+        <Route path="/" element={<ProductListingPage category="all" />} />
+        <Route path="/all" element={<ProductListingPage category="all" />} />
+        <Route path="/tech" element={<ProductListingPage category="tech" />} />
+        <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
+        <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
+        {/* Fallback route */}
+        <Route path="*" element={<ProductListingPage category="all" />} />
+      </Routes>
     </CartProvider>
   );
 };
