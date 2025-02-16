@@ -1,5 +1,6 @@
+// src/App.jsx
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // Remove BrowserRouter import
 import Header from "./components/Header";
 import CartOverlay from "./components/CartOverlay";
 import { CartProvider } from "./context/CartContext";
@@ -16,19 +17,16 @@ const App = () => {
 
   return (
     <CartProvider>
-      {/* Removed the basename so links render as "/tech" etc. */}
-      <Router>
-        <Header toggleOverlay={toggleOverlay} />
-        {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
-        <Routes>
-          <Route path="/" element={<ProductListingPage />} />
-          <Route path="/products" element={<ProductListingPage />} />
-          <Route
-            path="/product/:id"
-            element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
-          />
-        </Routes>
-      </Router>
+      <Header toggleOverlay={toggleOverlay} />
+      {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
+      <Routes>
+        <Route path="/" element={<ProductListingPage />} />
+        <Route path="/products" element={<ProductListingPage />} />
+        <Route
+          path="/product/:id"
+          element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
+        />
+      </Routes>
     </CartProvider>
   );
 };

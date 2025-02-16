@@ -1,14 +1,16 @@
 // src/main.jsx
 import React from "react";
-import ReactDOM from "react-dom/client"; // Updated import for React 18
+import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
+import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 import App from "./App";
-import client from "./graphql/apolloClient";  // Import Apollo Client
+import client from "./graphql/apolloClient";
 
-// Create a root element and render using createRoot
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ApolloProvider client={client}>  {/* Provide Apollo Client to the app */}
-    <App />
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>
 );
