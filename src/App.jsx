@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/tech" element={<ProductListingPage category="tech" />} />
           <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
           <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
-          {/* Optional fallback if none match */}
+          {/* Fallback route */}
           <Route path="*" element={<ProductListingPage category="all" />} />
         </Routes>
       </Router>

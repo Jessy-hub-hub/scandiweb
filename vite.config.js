@@ -1,10 +1,11 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig(({ command }) => ({
-  // Set the base path to match your GitHub Pages repository name.
-  base: '/scandiweb/',
+  // Use a relative base so that asset paths are correct.
+  base: './',
   plugins: [react(), svgr()],
   server: {
     port: 3000,
@@ -16,8 +17,6 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
-    // If you're deploying to GitHub Pages, you might use "docs" or "dist"
-    // as your output directory. Make sure your GitHub Pages settings match.
     outDir: 'docs'
   }
 }));
