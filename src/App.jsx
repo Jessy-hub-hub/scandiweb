@@ -10,14 +10,11 @@ import "./App.css";
 
 const App = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-
-  const toggleOverlay = () => {
-    setIsOverlayVisible((prev) => !prev);
-  };
+  const toggleOverlay = () => setIsOverlayVisible((prev) => !prev);
 
   return (
     <CartProvider>
-      <Router basename="/scandiweb">
+      <Router>
         <Header toggleOverlay={toggleOverlay} />
         {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
         <Routes>
@@ -26,6 +23,8 @@ const App = () => {
           <Route path="/tech" element={<ProductListingPage category="tech" />} />
           <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
           <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
+          {/* Optional fallback if none match */}
+          <Route path="*" element={<ProductListingPage category="all" />} />
         </Routes>
       </Router>
     </CartProvider>
