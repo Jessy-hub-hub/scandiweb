@@ -1,4 +1,3 @@
-// src/ProductListingPage.jsx
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Link, useLocation, useNavigate } from "react-router-dom";

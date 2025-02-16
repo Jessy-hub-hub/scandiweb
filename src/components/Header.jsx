@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -20,15 +19,9 @@ const Header = ({ toggleOverlay }) => {
   return (
     <header className="header">
       <nav>
-        <Link to="/all" {...getCategoryLinkProps("all")}>
-          All
-        </Link>
-        <Link to="/tech" {...getCategoryLinkProps("tech")}>
-          Tech
-        </Link>
-        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>
-          Clothes
-        </Link>
+        <Link to="/all" {...getCategoryLinkProps("all")}>All</Link>
+        <Link to="/tech" {...getCategoryLinkProps("tech")}>Tech</Link>
+        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>Clothes</Link>
       </nav>
       <button data-testid="cart-btn" onClick={toggleOverlay}>
         Cart{" "}

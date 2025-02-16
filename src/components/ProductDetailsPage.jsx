@@ -1,10 +1,8 @@
-// src/ProductDetailsPage.jsx
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import { useCart } from "../context/CartContext";
-// Removed duplicate Header import
 import "./ProductDetailsPage.css";
 
 const ProductDetailsPage = ({ toggleOverlay }) => {
@@ -20,7 +18,7 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // Find the product by id (ensure your query returns an array of products)
+  // Find the product by id
   const product = data.products.find((prod) => String(prod.id) === id);
   if (!product) return <p>Product not found.</p>;
 
@@ -84,7 +82,9 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
                 <button
                   key={item.id}
                   onClick={() => handleAttributeSelect(attribute.id, item.value)}
-                  className={`attribute-button ${selectedAttributes[attribute.id] === item.value ? "selected" : ""}`}
+                  className={`attribute-button ${
+                    selectedAttributes[attribute.id] === item.value ? "selected" : ""
+                  }`}
                   style={attribute.type === "swatch" ? { backgroundColor: item.value } : {}}
                 >
                   {attribute.type !== "swatch" ? item.displayValue : ""}
@@ -105,7 +105,6 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
           data-testid="add-to-cart"
           disabled={!allAttributesSelected}
           onClick={() => {
-            // Attach a default price for the cart
             const productWithPrice = { ...product, price: product.prices[0] };
             addToCart(productWithPrice, selectedAttributes);
             toggleOverlay();
