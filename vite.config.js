@@ -1,11 +1,10 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig(({ command }) => ({
-  // Use a relative base so that asset paths are correct.
-  base: './',
+  // Correct base path for GitHub Pages
+  base: command === 'build' ? '/scandiweb/' : '/',
   plugins: [react(), svgr()],
   server: {
     port: 3000,
@@ -17,6 +16,6 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
-    outDir: 'docs'
+    outDir: 'docs' // GitHub Pages serves from "docs"
   }
 }));
