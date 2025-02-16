@@ -1,15 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
-import { HashRouter } from "react-router-dom"; // Keep HashRouter ONLY here
+import { BrowserRouter } from "react-router-dom"; // Use BrowserRouter for standard paths
 import App from "./App";
 import client from "./graphql/apolloClient";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
-    <HashRouter> {/* This should be the only Router */}
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </ApolloProvider>
 );
