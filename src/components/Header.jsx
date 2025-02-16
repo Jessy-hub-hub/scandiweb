@@ -1,3 +1,4 @@
+// src/components/Header.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -8,13 +9,9 @@ const Header = ({ toggleOverlay }) => {
   const location = useLocation();
   const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  // Determine the active category.
-  // When at "/" we treat it as "all", otherwise remove the leading slash.
+  // When at "/" we treat it as "all"
   const activeCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
 
-  // Return the proper data-testid for each link:
-  // - If the link represents the active category, use "active-category-link".
-  // - Otherwise, use "category-link".
   const getCategoryLinkProps = (category) =>
     category === activeCategory
       ? { "data-testid": "active-category-link", className: "active" }

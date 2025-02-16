@@ -1,3 +1,4 @@
+// src/ProductListingPage.jsx
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -38,7 +39,7 @@ const ProductListingPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // Determine selected category from the current pathname.
+  // Use the pathname (after the hash) to determine category.
   const selectedCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
 
   if (loading) return <p>Loading...</p>;
@@ -50,10 +51,7 @@ const ProductListingPage = () => {
       : data.products.filter((product) => product.category === selectedCategory);
 
   const handleQuickShop = (e, product) => {
-    // Prevent navigation from the card click.
     e.stopPropagation();
-
-    // Build default options by selecting the first item of each attribute.
     const defaultOptions =
       product.attributes?.reduce((acc, attribute) => {
         if (attribute.items && attribute.items.length > 0) {
@@ -77,7 +75,6 @@ const ProductListingPage = () => {
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
-      {/* Category navigation using Link elements */}
       <div className="category-navigation">
         <Link to="/all">All</Link>
         <Link to="/tech">Tech</Link>

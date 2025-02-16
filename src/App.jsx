@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <CartProvider>
-      <Router>
+      <Router basename="/scandiweb">
         <Header toggleOverlay={toggleOverlay} />
         {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
         <Routes>
