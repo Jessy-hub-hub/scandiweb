@@ -21,8 +21,10 @@ const App = () => {
         <Route path="/all" element={<ProductListingPage category="all" />} />
         <Route path="/tech" element={<ProductListingPage category="tech" />} />
         <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
-        <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
-        {/* Fallback route */}
+        <Route
+          path="/product/:id"
+          element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
+        />
         <Route path="*" element={<ProductListingPage category="all" />} />
       </Routes>
     </CartProvider>

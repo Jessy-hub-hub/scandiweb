@@ -1,10 +1,10 @@
-// ProductDetailsPage.jsx
+// src/ProductDetailsPage.jsx
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import { useCart } from "../context/CartContext";
-import Header from "./Header"; // Import the Header
+// Removed duplicate Header import
 import "./ProductDetailsPage.css";
 
 const ProductDetailsPage = ({ toggleOverlay }) => {
@@ -45,86 +45,80 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   );
 
   return (
-    <>
-      {/* Render the Header so that links like /tech are present */}
-      <Header toggleOverlay={toggleOverlay} />
-      <div className="product-details-page">
-        <div className="product-image-section">
-          <div className="thumbnails">
-            {product.gallery.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`Thumbnail ${index}`}
-                className={`thumbnail ${currentImageIndex === index ? "active" : ""}`}
-                onClick={() => setCurrentImageIndex(index)}
-              />
-            ))}
-          </div>
-          <div className="main-image-wrapper">
-            <button className="arrow left-arrow" onClick={() => handleImageNavigation("prev")}>
-              &#9664;
-            </button>
+    <div className="product-details-page">
+      <div className="product-image-section">
+        <div className="thumbnails">
+          {product.gallery.map((img, index) => (
             <img
-              className="main-image"
-              src={product.gallery[currentImageIndex]}
-              alt={product.name}
+              key={index}
+              src={img}
+              alt={`Thumbnail ${index}`}
+              className={`thumbnail ${currentImageIndex === index ? "active" : ""}`}
+              onClick={() => setCurrentImageIndex(index)}
             />
-            <button className="arrow right-arrow" onClick={() => handleImageNavigation("next")}>
-              &#9654;
-            </button>
-          </div>
-        </div>
-
-        <div className="product-details-section">
-          <h1 className="product-name">{product.name}</h1>
-
-          {product.attributes.map((attribute) => (
-            <div key={attribute.id} className="attribute-set">
-              <h3>{attribute.name}</h3>
-              <div data-testid={`product-attribute-${attribute.id.toLowerCase()}`}>
-                {attribute.items.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => handleAttributeSelect(attribute.id, item.value)}
-                    className={`attribute-button ${
-                      selectedAttributes[attribute.id] === item.value ? "selected" : ""
-                    }`}
-                    style={attribute.type === "swatch" ? { backgroundColor: item.value } : {}}
-                  >
-                    {attribute.type !== "swatch" ? item.displayValue : ""}
-                  </button>
-                ))}
-              </div>
-            </div>
           ))}
-
-          <h3>Price</h3>
-          <p className="product-price">
-            {product.prices[0].currency.symbol}
-            {product.prices[0].amount.toFixed(2)}
-          </p>
-
-          <button
-            className="add-to-cart-btn"
-            data-testid="add-to-cart"
-            disabled={!allAttributesSelected}
-            onClick={() => {
-              // Attach a default price for the cart
-              const productWithPrice = { ...product, price: product.prices[0] };
-              addToCart(productWithPrice, selectedAttributes);
-              toggleOverlay();
-            }}
-          >
-            Add to Cart
+        </div>
+        <div className="main-image-wrapper">
+          <button className="arrow left-arrow" onClick={() => handleImageNavigation("prev")}>
+            &#9664;
           </button>
-
-          <div data-testid="product-description" className="product-description">
-            {product.description}
-          </div>
+          <img
+            className="main-image"
+            src={product.gallery[currentImageIndex]}
+            alt={product.name}
+          />
+          <button className="arrow right-arrow" onClick={() => handleImageNavigation("next")}>
+            &#9654;
+          </button>
         </div>
       </div>
-    </>
+
+      <div className="product-details-section">
+        <h1 className="product-name">{product.name}</h1>
+
+        {product.attributes.map((attribute) => (
+          <div key={attribute.id} className="attribute-set">
+            <h3>{attribute.name}</h3>
+            <div data-testid={`product-attribute-${attribute.id.toLowerCase()}`}>
+              {attribute.items.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleAttributeSelect(attribute.id, item.value)}
+                  className={`attribute-button ${selectedAttributes[attribute.id] === item.value ? "selected" : ""}`}
+                  style={attribute.type === "swatch" ? { backgroundColor: item.value } : {}}
+                >
+                  {attribute.type !== "swatch" ? item.displayValue : ""}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <h3>Price</h3>
+        <p className="product-price">
+          {product.prices[0].currency.symbol}
+          {product.prices[0].amount.toFixed(2)}
+        </p>
+
+        <button
+          className="add-to-cart-btn"
+          data-testid="add-to-cart"
+          disabled={!allAttributesSelected}
+          onClick={() => {
+            // Attach a default price for the cart
+            const productWithPrice = { ...product, price: product.prices[0] };
+            addToCart(productWithPrice, selectedAttributes);
+            toggleOverlay();
+          }}
+        >
+          Add to Cart
+        </button>
+
+        <div data-testid="product-description" className="product-description">
+          {product.description}
+        </div>
+      </div>
+    </div>
   );
 };
 
