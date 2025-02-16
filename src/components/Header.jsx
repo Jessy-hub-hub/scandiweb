@@ -12,6 +12,9 @@ const Header = ({ toggleOverlay }) => {
   // When at "/" we treat it as "all", otherwise remove the leading slash.
   const activeCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
 
+  // Return the proper data-testid for each link:
+  // - If the link represents the active category, use "active-category-link".
+  // - Otherwise, use "category-link".
   const getCategoryLinkProps = (category) =>
     category === activeCategory
       ? { "data-testid": "active-category-link", className: "active" }
