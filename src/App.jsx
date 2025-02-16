@@ -1,6 +1,5 @@
-// src/App.jsx
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import CartOverlay from "./components/CartOverlay";
 import { CartProvider } from "./context/CartContext";
@@ -10,6 +9,12 @@ import "./App.css";
 
 const App = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("Current Route:", location.pathname);
+  }, [location]);
+
   const toggleOverlay = () => setIsOverlayVisible((prev) => !prev);
 
   return (
@@ -21,10 +26,7 @@ const App = () => {
         <Route path="/all" element={<ProductListingPage category="all" />} />
         <Route path="/tech" element={<ProductListingPage category="tech" />} />
         <Route path="/clothes" element={<ProductListingPage category="clothes" />} />
-        <Route
-          path="/product/:id"
-          element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
-        />
+        <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
         <Route path="*" element={<ProductListingPage category="all" />} />
       </Routes>
     </CartProvider>
