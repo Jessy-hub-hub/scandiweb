@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "./ProductListingPage.css";
 
@@ -34,16 +34,12 @@ const GET_CATEGORIES_AND_PRODUCTS = gql`
 
 const ProductListingPage = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES_AND_PRODUCTS);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const categoryQuery = queryParams.get("category");
-    setSelectedCategory(categoryQuery || "all");
-  }, [location.search]);
+  // Determine selected category from the current pathname.
+  const selectedCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -51,29 +47,22 @@ const ProductListingPage = () => {
   const filteredProducts =
     selectedCategory === "all"
       ? data.products
-      : data.products.filter(
-          (product) => product.category === selectedCategory
-        );
+      : data.products.filter((product) => product.category === selectedCategory);
 
   const handleQuickShop = (e, product) => {
-    // Prevent the product card click from triggering navigation.
+    // Prevent navigation from the card click.
     e.stopPropagation();
 
-    // Build default options by taking the first option from each attribute.
-    let defaultOptions = {};
-    if (product.attributes && product.attributes.length > 0) {
-      defaultOptions = product.attributes.reduce((acc, attribute) => {
+    // Build default options by selecting the first item of each attribute.
+    const defaultOptions =
+      product.attributes?.reduce((acc, attribute) => {
         if (attribute.items && attribute.items.length > 0) {
           acc[attribute.id] = attribute.items[0].value;
         }
         return acc;
-      }, {});
-    }
+      }, {}) || {};
 
-    // Attach the default price to the product.
     const productWithPrice = { ...product, price: product.prices[0] };
-
-    // Add the product with the default options and price to the cart.
     addToCart(productWithPrice, defaultOptions);
     alert(`Quick Shop: Added ${product.name} to cart with default options!`);
   };
@@ -82,23 +71,17 @@ const ProductListingPage = () => {
     navigate(`/product/${productId}`);
   };
 
-  const navigateToCategory = (category) => {
-    navigate(`?category=${category}`);
-  };
-
   return (
     <div className="product-listing-page">
       <h1 className="category-title">
-        {selectedCategory.charAt(0).toUpperCase() +
-          selectedCategory.slice(1)}
+        {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
+      {/* Category navigation using Link elements */}
       <div className="category-navigation">
-        <button onClick={() => navigateToCategory("all")}>All</button>
-        <button onClick={() => navigateToCategory("tech")}>Tech</button>
-        <button onClick={() => navigateToCategory("clothes")}>
-          Clothes
-        </button>
+        <Link to="/all">All</Link>
+        <Link to="/tech">Tech</Link>
+        <Link to="/clothes">Clothes</Link>
       </div>
 
       <div className="product-grid">

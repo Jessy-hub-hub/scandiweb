@@ -1,50 +1,34 @@
 import React from "react";
-import { useCart } from "../context/CartContext"; // Use custom hook instead of CartContext
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./Header.css";
 
 const Header = ({ toggleOverlay }) => {
-  const { cart } = useCart(); // Now using the custom hook to access cart data
-  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
-  const navigate = useNavigate();
+  const { cart } = useCart();
   const location = useLocation();
+  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
-  // Extract active category from URL query parameters; default to "all"
-  const queryParams = new URLSearchParams(location.search);
-  const activeCategory = queryParams.get("category") || "all";
+  // Determine the active category.
+  // When at "/" we treat it as "all", otherwise remove the leading slash.
+  const activeCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
 
-  const handleCategoryClick = (category) => {
-    navigate(`/products?category=${category}`);
-  };
-
-  // Returns the proper data-testid and class based on active category
-  const getCategoryButtonProps = (category) => {
-    return category === activeCategory
+  const getCategoryLinkProps = (category) =>
+    category === activeCategory
       ? { "data-testid": "active-category-link", className: "active" }
       : { "data-testid": "category-link" };
-  };
 
   return (
     <header className="header">
       <nav>
-        <button
-          {...getCategoryButtonProps("all")}
-          onClick={() => handleCategoryClick("all")}
-        >
+        <Link to="/all" {...getCategoryLinkProps("all")}>
           All
-        </button>
-        <button
-          {...getCategoryButtonProps("tech")}
-          onClick={() => handleCategoryClick("tech")}
-        >
+        </Link>
+        <Link to="/tech" {...getCategoryLinkProps("tech")}>
           Tech
-        </button>
-        <button
-          {...getCategoryButtonProps("clothes")}
-          onClick={() => handleCategoryClick("clothes")}
-        >
+        </Link>
+        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>
           Clothes
-        </button>
+        </Link>
       </nav>
       <button data-testid="cart-btn" onClick={toggleOverlay}>
         Cart{" "}
