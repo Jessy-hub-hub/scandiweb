@@ -11,18 +11,21 @@ const App = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
   const toggleOverlay = () => {
-    setIsOverlayVisible((prev) => !prev);
+    setIsOverlayVisible(prev => !prev);
   };
 
   return (
     <CartProvider>
-      {/* Set basename without a trailing slash */}
-      <Router basename="/scandiweb-project/">
+      {/* 
+          The Router's basename is set dynamically using import.meta.env.BASE_URL.
+          When building with Vite, this will be "/scandiweb/" as defined in vite.config.js.
+      */}
+      <Router basename={import.meta.env.BASE_URL}>
         <Header toggleOverlay={toggleOverlay} />
         {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
         <Routes>
-          <Route path="/products" element={<ProductListingPage />} />
           <Route path="/" element={<ProductListingPage />} />
+          <Route path="/products" element={<ProductListingPage />} />
           <Route path="/product/:id" element={<ProductDetailsPage toggleOverlay={toggleOverlay} />} />
         </Routes>
       </Router>
