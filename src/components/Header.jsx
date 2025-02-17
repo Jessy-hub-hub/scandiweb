@@ -21,13 +21,13 @@ const Header = ({ toggleOverlay }) => {
   return (
     <header className="header">
       <nav>
-        <Link to="/all" {...getCategoryLinkProps("all")}>
+        <Link to="/scandiweb/all" {...getCategoryLinkProps("all")}>
           all
         </Link>
-        <Link to="/tech" {...getCategoryLinkProps("tech")}>
+        <Link to="/scandiweb/tech" {...getCategoryLinkProps("tech")}>
           tech
         </Link>
-        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>
+        <Link to="/scandiweb/clothes" {...getCategoryLinkProps("clothes")}>
           clothes
         </Link>
       </nav>
