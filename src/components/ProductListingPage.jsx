@@ -73,13 +73,12 @@ const ProductListingPage = () => {
 
   return (
     <div className="product-listing-page">
-      {/* Display the active category as a title (static text) */}
+      {/* This is the ONLY place we show the category title. */}
       <h1 className="category-title">
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
-      {/* Note: Removed the clickable category navigation from here */}
-
+      {/* No extra navigation links here—just the products. */}
       <div className="product-grid">
         {filteredProducts.map((product) => (
           <div
