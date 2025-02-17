@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import CartOverlay from "./components/CartOverlay";
 import { CartProvider } from "./context/CartContext";
@@ -13,19 +13,21 @@ const App = () => {
 
   return (
     <CartProvider>
-      <Header toggleOverlay={toggleOverlay} />
-      {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
-      <Routes>
-        <Route path="/" element={<ProductListingPage />} />
-        <Route path="/all" element={<ProductListingPage />} />
-        <Route path="/tech" element={<ProductListingPage />} />
-        <Route path="/clothes" element={<ProductListingPage />} />
-        <Route
-          path="/product/:id"
-          element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
-        />
-        <Route path="*" element={<ProductListingPage />} />
-      </Routes>
+      <BrowserRouter basename={window.location.pathname.split('/')[1] || ''}>
+        <Header toggleOverlay={toggleOverlay} />
+        {isOverlayVisible && <CartOverlay onClose={toggleOverlay} />}
+        <Routes>
+          <Route path="/" element={<ProductListingPage />} />
+          <Route path="/all" element={<ProductListingPage />} />
+          <Route path="/tech" element={<ProductListingPage />} />
+          <Route path="/clothes" element={<ProductListingPage />} />
+          <Route
+            path="/product/:id"
+            element={<ProductDetailsPage toggleOverlay={toggleOverlay} />}
+          />
+          <Route path="*" element={<ProductListingPage />} />
+        </Routes>
+      </BrowserRouter>
     </CartProvider>
   );
 };
