@@ -6,10 +6,11 @@ import "./Header.css";
 const Header = ({ toggleOverlay }) => {
   const { cart } = useCart();
   const location = useLocation();
-  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  // Extract the first non-empty segment from the URL; default to "all"
+  const segments = location.pathname.split("/").filter(Boolean);
+  const activeCategory = segments[0] || "all";
 
-  // When at "/" we treat it as "all"
-  const activeCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
+  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const getCategoryLinkProps = (category) =>
     category === activeCategory
@@ -19,9 +20,15 @@ const Header = ({ toggleOverlay }) => {
   return (
     <header className="header">
       <nav>
-        <Link to="/all" {...getCategoryLinkProps("all")}>All</Link>
-        <Link to="/tech" {...getCategoryLinkProps("tech")}>Tech</Link>
-        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>Clothes</Link>
+        <Link to="/all" {...getCategoryLinkProps("all")}>
+          All
+        </Link>
+        <Link to="/tech" {...getCategoryLinkProps("tech")}>
+          Tech
+        </Link>
+        <Link to="/clothes" {...getCategoryLinkProps("clothes")}>
+          Clothes
+        </Link>
       </nav>
       <button data-testid="cart-btn" onClick={toggleOverlay}>
         Cart{" "}

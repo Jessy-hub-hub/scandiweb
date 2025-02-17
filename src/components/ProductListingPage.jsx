@@ -1,6 +1,6 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "./ProductListingPage.css";
 
@@ -38,8 +38,9 @@ const ProductListingPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // Use the pathname (after the hash) to determine category.
-  const selectedCategory = location.pathname === "/" ? "all" : location.pathname.slice(1);
+  // Extract the first non-empty segment from the URL; default to "all"
+  const segments = location.pathname.split("/").filter(Boolean);
+  const selectedCategory = segments[0] || "all";
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -47,7 +48,9 @@ const ProductListingPage = () => {
   const filteredProducts =
     selectedCategory === "all"
       ? data.products
-      : data.products.filter((product) => product.category === selectedCategory);
+      : data.products.filter(
+          (product) => product.category === selectedCategory
+        );
 
   const handleQuickShop = (e, product) => {
     e.stopPropagation();
@@ -70,15 +73,12 @@ const ProductListingPage = () => {
 
   return (
     <div className="product-listing-page">
+      {/* Display the active category as a title (static text) */}
       <h1 className="category-title">
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
-      <div className="category-navigation">
-        <Link to="/all">All</Link>
-        <Link to="/tech">Tech</Link>
-        <Link to="/clothes">Clothes</Link>
-      </div>
+      {/* Note: Removed the clickable category navigation from here */}
 
       <div className="product-grid">
         {filteredProducts.map((product) => (
