@@ -6,6 +6,11 @@
 .category-title {
   text-align: left;
   margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  padding-left: 20px; /* Adjust left padding for better spacing */
+  margin-top: 80px; /* Ensures it's positioned below the header */
+
 }
 
 .category-navigation {
