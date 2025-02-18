@@ -7,7 +7,7 @@ const Header = ({ toggleOverlay }) => {
   const { cart } = useCart();
   const location = useLocation();
 
-  // Extract the first non-empty segment from the URL; default to "all"
+  // Determine active category from URL segments
   const segments = location.pathname.split("/").filter(Boolean);
   const activeCategory = segments[0] || "all";
 
