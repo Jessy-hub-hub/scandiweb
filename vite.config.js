@@ -2,9 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 
-export default defineConfig(({ command }) => ({
-  // Correct base path for GitHub Pages
-  base: command === 'build' ? '/scandiweb/' : '/',
+export default defineConfig(() => ({
+  base: process.env.VITE_BASENAME || '/',
   plugins: [react(), svgr()],
   server: {
     port: 3000,
