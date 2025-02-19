@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { useCart } from "../context/CartContext";
 import "./CartOverlay.css";
 import { gql, useMutation } from "@apollo/client";
@@ -51,12 +52,21 @@ const CartOverlay = ({ onClose }) => {
     }
   };
 
-  return (
+  // Build the overlay content
+  const overlayContent = (
     <>
-      {/* Backdrop to close the overlay */}
+      {/* Backdrop for closing the overlay */}
       <div className="backdrop" onClick={onClose} />
-      {/* Added data-testid attribute here for testing */}
-      <div className="cart-overlay" data-testid="cart-overlay">
+      {/* 
+          The overlay container has:
+          - data-testid="cart-overlay" so tests can find it
+          - inline style to force display as flex (visible)
+      */}
+      <div
+        className="cart-overlay"
+        data-testid="cart-overlay"
+        style={{ display: "flex" }}
+      >
         <h3>
           My Bag, {totalQuantity} {totalQuantity === 1 ? "Item" : "Items"}
         </h3>
@@ -109,6 +119,9 @@ const CartOverlay = ({ onClose }) => {
       </div>
     </>
   );
+
+  // Render the overlay into the document body using a portal
+  return ReactDOM.createPortal(overlayContent, document.body);
 };
 
 export default CartOverlay;
