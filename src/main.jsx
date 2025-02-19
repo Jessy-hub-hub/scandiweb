@@ -1,15 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import client from "./graphql/apolloClient";
 
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <BrowserRouter basename="/scandiweb">
-      <App />
-    </BrowserRouter>
-  </ApolloProvider>,
-  document.getElementById("root")
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <BrowserRouter basename="/scandiweb">
+        <App />
+      </BrowserRouter>
+    </ApolloProvider>
+  </React.StrictMode>
 );
