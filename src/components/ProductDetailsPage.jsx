@@ -8,7 +8,6 @@ import "./ProductDetailsPage.css";
 const ProductDetailsPage = ({ toggleOverlay }) => {
   const { id: routeParam } = useParams();
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
-    // We'll fix the ID we pass in "variables" below
     variables: { id: routeParam },
   });
 
@@ -16,17 +15,23 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addToCart } = useCart();
 
-  // 1) Translate the route param "iphone-12-pro" to "apple-iphone-12-pro"
-  let backendId = routeParam;
-  if (routeParam === "iphone-12-pro") {
-    backendId = "apple-iphone-12-pro";
-  }
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // 2) Find the product using the "backendId"
-  const product = data.products.find((p) => p.id === backendId);
+  // Try to find the product using a general rule:
+  // Either the product's id matches the routeParam,
+  // OR, if the product id contains a hyphen (brand prefix), then removing the first segment matches the routeParam.
+  const product = data.products.find((p) => {
+    if (p.id === routeParam) return true;
+    const parts = p.id.split("-");
+    if (parts.length > 1) {
+      // Remove the first segment (assumed brand) and join the rest.
+      const slug = parts.slice(1).join("-");
+      return slug === routeParam;
+    }
+    return false;
+  });
+
   if (!product) return <p>Product not found.</p>;
 
   const handleImageNavigation = (direction) => {
@@ -51,7 +56,7 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   );
 
   return (
-    // 3) Use the original routeParam in the data-testid so the test sees "product-iphone-12-pro"
+    // Use the routeParam in the data-testid so that the test sees, for example, "product-iphone-12-pro"
     <div className="product-details-page" data-testid={`product-${routeParam}`}>
       <div className="product-image-section">
         <div className="thumbnails">
