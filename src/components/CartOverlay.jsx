@@ -53,8 +53,10 @@ const CartOverlay = ({ onClose }) => {
 
   return (
     <>
+      {/* Backdrop to close the overlay */}
       <div className="backdrop" onClick={onClose} />
-      <div className="cart-overlay">
+      {/* Added data-testid attribute here for testing */}
+      <div className="cart-overlay" data-testid="cart-overlay">
         <h3>
           My Bag, {totalQuantity} {totalQuantity === 1 ? "Item" : "Items"}
         </h3>
@@ -95,11 +97,15 @@ const CartOverlay = ({ onClose }) => {
         <button
           onClick={handlePlaceOrder}
           disabled={cart.length === 0 || loading}
-          className={`place-order-btn ${cart.length === 0 ? "disabled" : "active"}`}
+          className={`place-order-btn ${
+            cart.length === 0 ? "disabled" : "active"
+          }`}
         >
           {loading ? "Placing Order..." : "Place Order"}
         </button>
-        {error && <p className="error">Failed to place order. Please try again.</p>}
+        {error && (
+          <p className="error">Failed to place order. Please try again.</p>
+        )}
       </div>
     </>
   );
