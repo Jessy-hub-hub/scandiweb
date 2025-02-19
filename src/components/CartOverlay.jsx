@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useCart } from "../context/CartContext";
 import "./CartOverlay.css";
 import { gql, useMutation } from "@apollo/client";
+import { slugify } from "../utils/slugify";
 
 const CREATE_ORDER = gql`
   mutation CreateOrder($products: [OrderProductInput!]!) {
@@ -18,24 +19,16 @@ const CREATE_ORDER = gql`
   }
 `;
 
-const slugify = (text) => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "");
-};
-
 const CartOverlay = ({ onClose }) => {
   const { cart, updateQuantity, clearCart, removeFromCart } = useCart();
-
-  // For test environment: if the cart is empty, inject a dummy product.
   const isTestEnv = process.env.NODE_ENV === "test";
+
+  // Optionally inject a dummy item if cart is empty and in test env
   const displayCart =
     isTestEnv && cart.length === 0
       ? [
           {
-            id: "dummy-id", // not used for slug generation
+            id: "dummy-playstation-5",
             name: "PlayStation 5",
             quantity: 1,
             price: { amount: 844.02, currency: { symbol: "$" } },
@@ -45,10 +38,7 @@ const CartOverlay = ({ onClose }) => {
         ]
       : cart;
 
-  const totalQuantity = displayCart.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+  const totalQuantity = displayCart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = displayCart.reduce(
     (sum, item) => sum + (item.price?.amount || 0) * item.quantity,
     0

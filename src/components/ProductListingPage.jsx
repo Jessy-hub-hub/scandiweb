@@ -2,6 +2,7 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { slugify } from "../utils/slugify";  // import your slugify helper
 import "./ProductListingPage.css";
 
 const GET_CATEGORIES_AND_PRODUCTS = gql`
@@ -32,34 +33,27 @@ const GET_CATEGORIES_AND_PRODUCTS = gql`
   }
 `;
 
-// Helper function to generate a slug from text
-const slugify = (text) => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "");
-};
-
 const ProductListingPage = () => {
   const { loading, error, data } = useQuery(GET_CATEGORIES_AND_PRODUCTS);
   const location = useLocation();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  // Figure out which category is in the URL path, e.g. /tech => "tech"
   const segments = location.pathname.split("/").filter(Boolean);
   const selectedCategory = segments[0] || "all";
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  // Filter products by category or show all
   const filteredProducts =
     selectedCategory === "all"
       ? data.products
-      : data.products.filter((product) => product.category === selectedCategory);
+      : data.products.filter((p) => p.category === selectedCategory);
 
   const handleQuickShop = (e, product) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent card click from firing
     const defaultOptions =
       product.attributes?.reduce((acc, attribute) => {
         if (attribute.items && attribute.items.length > 0) {
@@ -67,12 +61,14 @@ const ProductListingPage = () => {
         }
         return acc;
       }, {}) || {};
+
     const productWithPrice = { ...product, price: product.prices[0] };
     addToCart(productWithPrice, defaultOptions);
     alert(`Quick Shop: Added ${product.name} to cart with default options!`);
   };
 
   const handleProductClick = (product) => {
+    // Navigate to /product/<slugified-name>
     const slug = slugify(product.name);
     navigate(`/product/${slug}`);
   };
@@ -82,13 +78,15 @@ const ProductListingPage = () => {
       <h1 className="category-title">
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
+
       <div className="product-grid">
         {filteredProducts.map((product) => {
-          const slug = slugify(product.name);
+          const slug = slugify(product.name); // e.g. "PlayStation 5" => "playstation-5"
           return (
             <div
               key={product.id}
               className={`product-card ${product.inStock ? "" : "out-of-stock"}`}
+              // The test expects data-testid="product-playstation-5"
               data-testid={`product-${slug}`}
               onClick={() => handleProductClick(product)}
             >
