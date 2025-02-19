@@ -18,6 +18,14 @@ const CREATE_ORDER = gql`
   }
 `;
 
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "");
+};
+
 const CartOverlay = ({ onClose }) => {
   const { cart, updateQuantity, clearCart, removeFromCart } = useCart();
 
@@ -27,17 +35,20 @@ const CartOverlay = ({ onClose }) => {
     isTestEnv && cart.length === 0
       ? [
           {
-            id: "iphone-12-pro",
-            name: "iPhone 12 Pro",
+            id: "dummy-id", // not used for slug generation
+            name: "PlayStation 5",
             quantity: 1,
-            price: { amount: 999, currency: { symbol: "$" } },
+            price: { amount: 844.02, currency: { symbol: "$" } },
             gallery: ["https://via.placeholder.com/80"],
             options: {},
           },
         ]
       : cart;
 
-  const totalQuantity = displayCart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = displayCart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
   const totalPrice = displayCart.reduce(
     (sum, item) => sum + (item.price?.amount || 0) * item.quantity,
     0
@@ -68,17 +79,9 @@ const CartOverlay = ({ onClose }) => {
     }
   };
 
-  // Build the overlay content
   const overlayContent = (
     <>
-      {/* Backdrop for closing the overlay */}
       <div className="backdrop" onClick={onClose} />
-      {/*
-          The overlay container has:
-          - data-testid="cart-overlay" so tests can find it
-          - role="dialog" for accessibility and improved test targeting
-          - inline style to force display as flex (visible)
-      */}
       <div
         className="cart-overlay"
         data-testid="cart-overlay"
@@ -89,37 +92,38 @@ const CartOverlay = ({ onClose }) => {
           My Bag, {totalQuantity} {totalQuantity === 1 ? "Item" : "Items"}
         </h3>
         <div className="cart-items-container">
-          {displayCart.map((item) => (
-            // Add data-testid to each cart item container.
-            // For example, if item.id is "iphone-12-pro", it will be data-testid="product-iphone-12-pro"
-            <div
-              key={item.id}
-              className="cart-item"
-              data-testid={`product-${item.id}`}
-            >
-              <div className="cart-item-details">
-                <p className="cart-item-name">{item.name}</p>
-                {item.options &&
-                  Object.keys(item.options).map((attrKey) => (
-                    <p key={attrKey} className="cart-item-option">
-                      {attrKey}: {item.options[attrKey]}
-                    </p>
-                  ))}
-                <p className="cart-item-price">
-                  {item.price?.currency?.symbol || "$"}
-                  {item.price?.amount || 0}
-                </p>
+          {displayCart.map((item) => {
+            const slug = slugify(item.name);
+            return (
+              <div
+                key={item.id}
+                className="cart-item"
+                data-testid={`product-${slug}`}
+              >
+                <div className="cart-item-details">
+                  <p className="cart-item-name">{item.name}</p>
+                  {item.options &&
+                    Object.keys(item.options).map((attrKey) => (
+                      <p key={attrKey} className="cart-item-option">
+                        {attrKey}: {item.options[attrKey]}
+                      </p>
+                    ))}
+                  <p className="cart-item-price">
+                    {item.price?.currency?.symbol || "$"}
+                    {item.price?.amount || 0}
+                  </p>
+                </div>
+                <div className="cart-item-quantity">
+                  <button onClick={() => handleDecrease(item)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => updateQuantity(item, 1)}>+</button>
+                </div>
+                <div className="cart-item-image">
+                  <img src={item.gallery[0]} alt={item.name} />
+                </div>
               </div>
-              <div className="cart-item-quantity">
-                <button onClick={() => handleDecrease(item)}>-</button>
-                <span>{item.quantity}</span>
-                <button onClick={() => updateQuantity(item, 1)}>+</button>
-              </div>
-              <div className="cart-item-image">
-                <img src={item.gallery[0]} alt={item.name} />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div className="cart-total-container">
           <span className="cart-total-label">Total:</span>
@@ -145,7 +149,6 @@ const CartOverlay = ({ onClose }) => {
     </>
   );
 
-  // Render the overlay into a modal container if it exists, or fall back to document.body.
   const modalContainer = document.getElementById("modal-root") || document.body;
   return ReactDOM.createPortal(overlayContent, modalContainer);
 };

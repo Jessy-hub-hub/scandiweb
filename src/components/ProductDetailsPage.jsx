@@ -5,9 +5,19 @@ import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import { useCart } from "../context/CartContext";
 import "./ProductDetailsPage.css";
 
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "");
+};
+
 const ProductDetailsPage = ({ toggleOverlay }) => {
-  const { id: routeParam } = useParams();
+  const { id: routeParam } = useParams(); // This is the slug, e.g., "iphone-12-pro"
   const { loading, error, data } = useQuery(GET_PRODUCT_BY_ID, {
+    // Depending on your backend, you may need to pass a different variable.
+    // Here we assume it returns all products and we filter in the frontend.
     variables: { id: routeParam },
   });
 
@@ -18,20 +28,8 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // Try to find the product using a general rule:
-  // Either the product's id matches the routeParam,
-  // OR, if the product id contains a hyphen (brand prefix), then removing the first segment matches the routeParam.
-  const product = data.products.find((p) => {
-    if (p.id === routeParam) return true;
-    const parts = p.id.split("-");
-    if (parts.length > 1) {
-      // Remove the first segment (assumed brand) and join the rest.
-      const slug = parts.slice(1).join("-");
-      return slug === routeParam;
-    }
-    return false;
-  });
-
+  // Find the product by comparing the slugified product name to the route param.
+  const product = data.products.find((p) => slugify(p.name) === routeParam);
   if (!product) return <p>Product not found.</p>;
 
   const handleImageNavigation = (direction) => {
@@ -50,14 +48,15 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
     setSelectedAttributes((prev) => ({ ...prev, [attributeId]: value }));
   };
 
-  // Ensure all attributes have been chosen
   const allAttributesSelected = product.attributes.every((attribute) =>
     selectedAttributes.hasOwnProperty(attribute.id)
   );
 
   return (
-    // Use the routeParam in the data-testid so that the test sees, for example, "product-iphone-12-pro"
-    <div className="product-details-page" data-testid={`product-${routeParam}`}>
+    <div
+      className="product-details-page"
+      data-testid={`product-${routeParam}`}
+    >
       <div className="product-image-section">
         <div className="thumbnails">
           {product.gallery.map((img, index) => (
@@ -103,7 +102,9 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
               {attribute.items.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleAttributeSelect(attribute.id, item.value)}
+                  onClick={() =>
+                    handleAttributeSelect(attribute.id, item.value)
+                  }
                   className={`attribute-button ${
                     selectedAttributes[attribute.id] === item.value
                       ? "selected"
@@ -141,7 +142,10 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
           Add to Cart
         </button>
 
-        <div data-testid="product-description" className="product-description">
+        <div
+          data-testid="product-description"
+          className="product-description"
+        >
           {product.description}
         </div>
       </div>
