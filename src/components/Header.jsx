@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import CartOverlay from "./CartOverlay";
 import "./Header.css";
 
-const Header = ({ toggleOverlay }) => {
+const Header = () => {
   const { cart } = useCart();
   const location = useLocation();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Determine active category from URL segments
   const segments = location.pathname.split("/").filter(Boolean);
@@ -31,7 +33,7 @@ const Header = ({ toggleOverlay }) => {
           clothes
         </Link>
       </nav>
-      <button data-testid="cart-btn" onClick={toggleOverlay}>
+      <button data-testid="cart-btn" onClick={() => setIsCartOpen(true)}>
         Cart{" "}
         {itemCount > 0 && (
           <span>
@@ -39,6 +41,7 @@ const Header = ({ toggleOverlay }) => {
           </span>
         )}
       </button>
+      {isCartOpen && <CartOverlay onClose={() => setIsCartOpen(false)} />}
     </header>
   );
 };

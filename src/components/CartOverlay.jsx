@@ -60,11 +60,13 @@ const CartOverlay = ({ onClose }) => {
       {/* 
           The overlay container has:
           - data-testid="cart-overlay" so tests can find it
+          - role="dialog" for accessibility and improved test targeting
           - inline style to force display as flex (visible)
       */}
       <div
         className="cart-overlay"
         data-testid="cart-overlay"
+        role="dialog"
         style={{ display: "flex" }}
       >
         <h3>
@@ -120,8 +122,9 @@ const CartOverlay = ({ onClose }) => {
     </>
   );
 
-  // Render the overlay into the document body using a portal
-  return ReactDOM.createPortal(overlayContent, document.body);
+  // Render the overlay into a modal container if it exists, or fall back to document.body.
+  const modalContainer = document.getElementById("modal-root") || document.body;
+  return ReactDOM.createPortal(overlayContent, modalContainer);
 };
 
 export default CartOverlay;
