@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_PRODUCT_BY_ID } from "../graphql/queries";
 import { useCart } from "../context/CartContext";
-import { slugify } from "../utils/slugify";
+import { slugify } from "../utils/slugify.js";
 import "./ProductDetailsPage.css";
 
 const ProductDetailsPage = ({ toggleOverlay }) => {

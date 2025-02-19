@@ -2,7 +2,7 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { slugify } from "../utils/slugify";  // import your slugify helper
+import { slugify } from "../utils/slugify.js";// import your slugify helper
 import "./ProductListingPage.css";
 
 const GET_CATEGORIES_AND_PRODUCTS = gql`

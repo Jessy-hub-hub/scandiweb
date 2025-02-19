@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useCart } from "../context/CartContext";
 import "./CartOverlay.css";
 import { gql, useMutation } from "@apollo/client";
-import { slugify } from "../utils/slugify";
+import { slugify } from "../utils/slugify.js";
 
 const CREATE_ORDER = gql`
   mutation CreateOrder($products: [OrderProductInput!]!) {
