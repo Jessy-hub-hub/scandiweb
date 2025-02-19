@@ -43,7 +43,8 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
   );
 
   return (
-    <div className="product-details-page">
+    // Added the data-testid to the main container.
+    <div className="product-details-page" data-testid={`product-${product.id}`}>
       <div className="product-image-section">
         <div className="thumbnails">
           {product.gallery.map((img, index) => (
@@ -51,13 +52,18 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
               key={index}
               src={img}
               alt={`Thumbnail ${index}`}
-              className={`thumbnail ${currentImageIndex === index ? "active" : ""}`}
+              className={`thumbnail ${
+                currentImageIndex === index ? "active" : ""
+              }`}
               onClick={() => setCurrentImageIndex(index)}
             />
           ))}
         </div>
         <div className="main-image-wrapper">
-          <button className="arrow left-arrow" onClick={() => handleImageNavigation("prev")}>
+          <button
+            className="arrow left-arrow"
+            onClick={() => handleImageNavigation("prev")}
+          >
             &#9664;
           </button>
           <img
@@ -65,7 +71,10 @@ const ProductDetailsPage = ({ toggleOverlay }) => {
             src={product.gallery[currentImageIndex]}
             alt={product.name}
           />
-          <button className="arrow right-arrow" onClick={() => handleImageNavigation("next")}>
+          <button
+            className="arrow right-arrow"
+            onClick={() => handleImageNavigation("next")}
+          >
             &#9654;
           </button>
         </div>
