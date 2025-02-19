@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/scandiweb/", // Prepend "/scandiweb/" to all built asset paths
+  base: "/scandiweb/", // This ensures asset URLs start with "/scandiweb/"
   plugins: [react(), svgr()],
   server: {
     port: 3000,
