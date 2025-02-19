@@ -74,7 +74,13 @@ const CartOverlay = ({ onClose }) => {
         </h3>
         <div className="cart-items-container">
           {cart.map((item) => (
-            <div key={item.id} className="cart-item">
+            // Add data-testid to each cart item container.
+            // For example, if item.id is "iphone-12-pro", this will be data-testid="product-iphone-12-pro"
+            <div
+              key={item.id}
+              className="cart-item"
+              data-testid={`product-${item.id}`}
+            >
               <div className="cart-item-details">
                 <p className="cart-item-name">{item.name}</p>
                 {item.options &&
