@@ -38,13 +38,16 @@ const ProductListingPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // Extract the first non-empty segment from the URL; default to "all"
+  // Split the pathname, ignoring empty segments
   const segments = location.pathname.split("/").filter(Boolean);
+
+  // Use "all" if there's no category in the path
   const selectedCategory = segments[0] || "all";
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  // Filter products by category, or show all
   const filteredProducts =
     selectedCategory === "all"
       ? data.products
@@ -62,6 +65,7 @@ const ProductListingPage = () => {
         return acc;
       }, {}) || {};
 
+    // For simplicity, pick the first price as the product's price
     const productWithPrice = { ...product, price: product.prices[0] };
     addToCart(productWithPrice, defaultOptions);
     alert(`Quick Shop: Added ${product.name} to cart with default options!`);
@@ -73,12 +77,11 @@ const ProductListingPage = () => {
 
   return (
     <div className="product-listing-page">
-      {/* This is the ONLY place we show the category title. */}
+      {/* Display the category title */}
       <h1 className="category-title">
         {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
       </h1>
 
-      {/* No extra navigation links here—just the products. */}
       <div className="product-grid">
         {filteredProducts.map((product) => (
           <div

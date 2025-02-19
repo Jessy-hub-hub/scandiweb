@@ -1,34 +1,15 @@
 .product-listing-page {
-  padding: 20px;
+  /* push everything down to avoid overlap with fixed header */
+  padding-top: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
   font-family: Arial, sans-serif;
 }
 
 .category-title {
-  text-align: left;
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
-  padding-left: 20px; /* Adjust left padding for better spacing */
-  margin-top: 80px; /* Ensures it's positioned below the header */
-
-}
-
-.category-navigation {
-  margin-bottom: 20px;
-}
-
-.category-navigation button {
-  margin-right: 10px;
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.category-navigation button:hover {
-  background-color: #dcdcdc;
 }
 
 .product-grid {
