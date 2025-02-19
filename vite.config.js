@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/scandiweb/", // This ensures asset URLs start with "/scandiweb/"
+  // Remove base: "/scandiweb/", now we serve at root:
+  base: "/",
   plugins: [react(), svgr()],
   server: {
     port: 3000,
@@ -15,6 +16,6 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "docs", // GitHub Pages serves from the "docs" folder
+    outDir: "docs", // GitHub Pages can serve from "docs"
   },
 });
