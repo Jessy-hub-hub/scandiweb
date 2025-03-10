@@ -1,0 +1,59 @@
+Query {
+    products: [Product]
+    categories: [Category]
+}
+
+type Mutation {
+    createOrder(input: OrderInput!): Order
+}
+
+type Product {
+    id: ID!
+    name: String!
+    inStock: Boolean!
+    description: String!
+    category: Category
+    brand: String!
+    attributes: [Attribute!]
+    gallery: [String!]
+    prices: [Price!]
+}
+
+type Category {
+    name: String!
+    products: [Product!]
+}
+
+type Attribute {
+    id: ID!
+    name: String!
+    type: String!
+    items: [Item!]
+}
+
+type Item {
+    id: ID!
+    displayValue: String!
+    value: String!
+}
+
+type Price {
+    amount: Float!
+    currency: Currency!
+}
+
+type Currency {
+    label: String!
+    symbol: String!
+}
+
+type Order {
+    id: ID!
+    productIds: [ID!]!
+    totalAmount: Float!
+}
+
+input OrderInput {
+    productIds: [ID!]!
+    totalAmount: Float!
+}

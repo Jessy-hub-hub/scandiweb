@@ -1,0 +1,13 @@
+{
+  "autoload": {
+      "psr-4": {
+          "Config\\": "config/",
+          "Services\\": "src/services/",
+          "Models\\": "src/models/"
+      }
+  },
+  "require": {
+      "nikic/fast-route": "^1.3",
+      "webonyx/graphql-php": "^15.19"
+  }
+}
