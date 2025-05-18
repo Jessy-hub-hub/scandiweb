@@ -1,8 +1,8 @@
 <?php
 $db_server = "localhost";
-$db_user = "gxsldqjc_scandiweb";
-$db_pass = "KaN72y=8ITR";
-$db_name = "gxsldqjc_scandiweb";
+$db_user = " ";
+$db_pass = " ";
+$db_name = " ";
 
 // Database connection
 $connect = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
